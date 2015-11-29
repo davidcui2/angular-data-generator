@@ -1,15 +1,26 @@
 <p>This is the partial for view 2.</p>
 <table border="1">
     <tr>
+        <th>Axis</th>
+        <th>Local generated</th>
+        <th>Server generated</th>
+    </tr>
+    <tr>
         <td>x</td>
+        <td>{{LocalData.x}}</td>
         <td>{{Data.x}}</td>
     </tr>
     <tr>
         <td>y</td>
+        <td>{{LocalData.y}}</td>
         <td>{{Data.y}}</td>
     </tr>
     <tr>
         <td>z</td>
+        <td>{{LocalData.z}}</td>
         <td>{{Data.z}}</td>
     </tr>
 </table>
+
+<button type="submit" class="btn btn-primary btn-info margin-top" ng-click="pollData()">Poll Data</button>
+

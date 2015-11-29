@@ -1,16 +1,25 @@
 'use strict';
 
+
+
 describe('myApp.view2 module', function() {
 
   beforeEach(module('myApp.view2'));
 
-  describe('view2 controller', function(){
+  describe('MeasurementController function', function() {
+    describe('MeasurementController', function() {
+        var scope;
 
-    it('should ....', inject(function($controller) {
-      //spec body
-      var view2Ctrl = $controller('View2Ctrl');
-      expect(view2Ctrl).toBeDefined();
-    }));
+        beforeEach(module('myApp.view2'));
 
-  });
+        beforeEach(inject(function($rootScope, $controller) {
+            scope = $rootScope.$new();
+            $controller('MeasurementController', {$scope: scope});
+        }));
+
+        it('should create "xValue" within range 0 and 1', function() {
+            expect(scope.xValue > 0 && scope.xValue < 1).toBeTruthy();
+        });
+    });
+});
 });
