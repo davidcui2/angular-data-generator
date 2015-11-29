@@ -38,22 +38,57 @@ var measureModule = angular.module('myApp.view2', ['ngRoute'])
     };
     //console.log("$scope.xValue = " + $scope.xValue);
 
-    $scope.pollData = $http.get('/api/data')
-            .success(function(data) {
-                console.log(data.generatedDate + " pollData success data.x: " + data.x);
-                $scope.Data = data;
-            })
-            .error(function(data) {
-                console.log("pollData error: " + data);
-            });
+    // $scope.pollData = function() {
+    //     $http.get('/api/data')
+    //         .success(function(data) {
+    //             console.log(data.generatedDate + " pollData success data.x: " + data.x);
+    //             $scope.Data = data;
+    //         })
+    //         .error(function(data) {
+    //             console.log("pollData error: " + data);
+    //         });
+    //     };
 
     $scope.Data = {};
-    $interval(function(){
-        $scope.LocalData = dataService.localRandomData().data;
-        dataService.pollData(function(data) {
-            $scope.Data = data;
-        });
-    },100);
+
+    var interval = null;
+
+    $scope.startPoll = function() {
+        console.log("Start to poll data from server");
+        $http.post('/api/data', {"command":"START-POLL-DATA"})
+            .success(function(data) {
+                $scope.serverResponse = data;
+            })
+            .error(function(data) {
+                $scope.serverResponse = "ERROR: " + data;
+                console.log('Error: ' + data);
+            });
+
+        interval = $interval(function(){
+            $scope.LocalData = dataService.localRandomData().data;
+            dataService.pollData(function(data) {
+                $scope.Data = data;
+            });
+        },100);
+    };
+
+    $scope.stopPoll = function() {
+        console.log("Stop Poll");
+
+        $http.post('/api/data', {"command":"STOP-POLL"})
+            .success(function(data) {
+                $scope.serverResponse = data;
+            })
+            .error(function(data) {
+                $scope.serverResponse = "ERROR: " + data;
+                console.log('Error: ' + data);
+            });
+
+        if (angular.isDefined(interval)) {
+            $interval.cancel(interval);
+        }
+    }
+    
     //dataService.start($scope.Data);
 }]);
 

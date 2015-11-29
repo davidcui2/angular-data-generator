@@ -35,6 +35,11 @@ app.get('/api/data', function(req, res) {
     res.json(data); // return all data in JSON format
 });
 
+app.post('/api/data', function(req, res) {
+    console.log("server post requested: %o", req.body.command);
+    res.send(req.body.command + " command received!");
+});
+
 function randomData() {
     var data = {};
     data.generatedDate = new Date().timeNow();
